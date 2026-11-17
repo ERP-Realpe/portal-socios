@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: hsl(var(--border)) transparent;
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 4px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: hsl(var(--border));
+        border-radius: 2px;
+    }
+
+    /* Barra delgada en el tono de la marca, sin canal gris (p. ej. la campanita). */
+    .scrollbar-suave {
+        scrollbar-width: thin;
+        scrollbar-color: hsl(var(--brand-tint-border)) transparent;
+    }
+    .scrollbar-suave::-webkit-scrollbar {
+        width: 8px;
+    }
+    .scrollbar-suave::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .scrollbar-suave::-webkit-scrollbar-thumb {
+        background-color: hsl(var(--brand-tint-border));
+        border-radius: 9999px;
+        /* Borde transparente: la barra se ve más delgada y separada del borde. */
+        border: 2px solid transparent;
+        background-clip: content-box;
+    }
+    .scrollbar-suave::-webkit-scrollbar-thumb:hover {
+        background-color: hsl(var(--brand-accent-border));
+    }
+
+    /* Permite desplazarse (rueda, touch, teclado) sin mostrar la barra. */
+    .scrollbar-none {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .scrollbar-none::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@layer base {
+    :root {
+        --background: 210 20% 98%;
+        --foreground: 222 47% 11%;
+        --card: 0 0% 100%;
+        --card-foreground: 222 47% 11%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222 47% 11%;
+        --primary: 217 91% 50%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 210 16% 93%;
+        --secondary-foreground: 222 47% 11%;
+        --muted: 210 16% 93%;
+        --muted-foreground: 215 16% 47%;
+        --accent: 210 16% 93%;
+        --accent-foreground: 222 47% 11%;
+        --destructive: 0 72% 51%;
+        --destructive-foreground: 0 0% 100%;
+        --border: 214 20% 88%;
+        --input: 214 20% 88%;
+        --ring: 217 91% 50%;
+        --chart-1: 217 91% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 43 74% 49%;
+        --chart-4: 0 72% 51%;
+        --chart-5: 262 52% 47%;
+        --radius: 0.625rem;
+        --sidebar-background: 280 60% 20%;
+        --sidebar-foreground: 210 20% 88%;
+        --sidebar-primary: 280 60% 35%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 280 40% 25%;
+        --sidebar-accent-foreground: 210 20% 95%;
+        --sidebar-border: 280 30% 25%;
+        --sidebar-ring: 280 70% 40%;
+        --success: 160 60% 45%;
+        --success-foreground: 0 0% 100%;
+        --warning: 43 74% 49%;
+        --warning-foreground: 0 0% 100%;
+        /* Morado principal del proyecto (#5B2A7D exacto del diseño Ronavi). */
+        --brand-purple: 275 50% 33%;
+        /* CTA primaria del punto de venta (botón "Generar factura", total de
+           la factura) y su estado hover — un morado más oscuro que --brand-purple. */
+        --brand-purple-dark: 271 69% 23%;
+        --brand-purple-darker: 273 78% 14%;
+        /* Fondos/bordes claros para resaltar bloques dentro de la marca (p.ej.
+           el badge de turno abierto o el bloque de datos de domicilio). */
+        --brand-tint: 275 40% 94%;
+        --brand-tint-border: 276 44% 88%;
+        /* Borde morado medio (más saturado que --brand-tint-border) para
+           botones "outline" con acento de marca, p.ej. "Editar pago". */
+        --brand-accent-border: 273 60% 77%;
+        /* Morado más claro que --brand-purple, usado solo como texto de
+           etiqueta sobre fondo --brand-tint (p.ej. "ABONADO"). */
+        --brand-label: 275 36% 45%;
+
+        /* Gris de etiqueta de formulario (inputs/selects), distinto de
+           --foreground y --muted-foreground — se repite en todos los
+           modales de Facturas de venta del diseño Ronavi. */
+        --form-label: 218 24% 27%;
+
+        /* Colores de estado (import de Claude Design "Ronavi Facturas de
+           Venta") — se reutilizan tanto en la barra de métricas como en los
+           badges de estado de factura (Pagada/Pendiente/Vencida/Anulada) y
+           cualquier otro chip de estado que necesite el mismo acento exacto.
+           No coinciden con --success/--warning/--destructive genéricos (esos
+           alimentan Button/Badge de acciones), así que viven aparte. */
+        --status-success-bg: 145 81% 96%;
+        --status-success-fg: 155 97% 24%;
+        --status-success-border: 145 47% 85%;
+        --status-success-dot: 152 82% 39%;
+
+        --status-warning-bg: 28 100% 97%;
+        --status-warning-fg: 22 92% 37%;
+        --status-warning-border: 30 70% 87%;
+        --status-warning-dot: 34 94% 50%;
+
+        --status-danger-bg: 5 86% 97%;
+        --status-danger-fg: 4 76% 40%;
+        --status-danger-border: 4 84% 90%;
+        --status-danger-dot: 4 86% 58%;
+        /* Tono usado solo como texto "meta" (p.ej. en la barra de métricas),
+           un poco más intenso que --status-danger-fg. */
+        --status-danger-meta: 4 74% 49%;
+
+        --status-neutral-bg: 220 18% 97%;
+        --status-neutral-fg: 221 13% 46%;
+        --status-neutral-border: 218 17% 91%;
+
+        /* Azul informativo (avatares, tipo "Detal"/"POS"). Antes era un azul
+           casi blanco (97% de luminosidad) — se subió la saturación/bajó la
+           luminosidad porque en los avatares de Clientes se veía como fondo
+           blanco. */
+        --status-info-bg: 213 97% 87%;
+        --status-info-fg: 224 64% 33%;
+
+        /* Gris de texto secundario ("428 facturas") y del punto de Anulada. */
+        --status-muted: 218 15% 65%;
+        --status-divider: 225 14% 95%;
+
+        /*
+         * Paleta semántica centralizada para botones, chips/badges de estado y
+         * demás componentes repetitivos de acción. Cambiar un valor aquí
+         * actualiza automáticamente todos los consumidores (Button, Badge,
+         * EstadoBadge, etc.) en toda la app — no hay colores sueltos por archivo.
+         *
+         * affirmative = acciones afirmativas/positivas (Guardar, Crear, Activar, Confirmar...)
+         * negative    = acciones negativas o de precaución (Eliminar, Cancelar, Inactivar...)
+         * caution     = advertencias intermedias (Pendiente, Por vencer...)
+         */
+        --action-affirmative: 77 100% 60%;
+        --action-affirmative-foreground: 0 0% 0%;
+        --action-negative: 0 93% 94%;
+        --action-negative-foreground: 0 74% 42%;
+        --action-caution: 48 96% 89%;
+        --action-caution-foreground: 26 90% 37%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+
+    /* Ningún input numérico del sistema debe mostrar las flechas de incremento/decremento */
+    input[type="number"] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+
+/* Login (diseño "Ronavi Login") */
+@keyframes rnIn { from { opacity: 0; transform: translateY(-14px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes rnFloat { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(6%, -5%) scale(1.12); } 100% { transform: translate(0, 0) scale(1); } }
+@keyframes rnPulse { 0% { box-shadow: 0 0 0 0 rgba(212, 249, 79, .55); } 100% { box-shadow: 0 0 0 9px rgba(212, 249, 79, 0); } }
+@keyframes rnFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes rnLogoIn {
+    0% { opacity: 0; transform: scale(.4) rotate(-14deg); filter: blur(10px); }
+    60% { opacity: 1; transform: scale(1.08) rotate(3deg); filter: blur(0); }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+@keyframes rnBreath {
+    0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 0 rgba(212, 249, 79, 0)); }
+    50% { transform: translateY(-6px) scale(1.04); filter: drop-shadow(0 0 28px rgba(212, 249, 79, .45)); }
+}
+@keyframes rnRing { 0% { transform: scale(.6); opacity: .7; } 100% { transform: scale(1.9); opacity: 0; } }
+@keyframes rnBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
